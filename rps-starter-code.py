@@ -22,6 +22,9 @@ def beats(one, two):
             (one == 'scissors' and two == 'paper') or
             (one == 'paper' and two == 'rock'))
 
+class RandomPlayer(Player):
+    
+
 
 class Game:
     def __init__(self, p1, p2):
