@@ -10,7 +10,6 @@ in this game"""
 
 import random
 
-
 class Player:
     def move(self):
         result = ['rock', 'paper', 'scissors']
@@ -19,23 +18,28 @@ class Player:
     def learn(self, my_move, their_move):
         pass
 
+class RandomPlayer(Player):
+    pass
+
 
 def beats(one, two):
     return ((one == 'rock' and two == 'scissors') or
             (one == 'scissors' and two == 'paper') or
             (one == 'paper' and two == 'rock'))
 
-# class RandomPlayer(Player):
-#     def __init__(self, name):
-#         self.name = name
-    
 
 class Game:
+    # Inicializador; (objeto criado, instância da classe Player, instância da classe 
+    # Player, argumentos passados em game = Game(Player(), Player()). 
     def __init__(self, p1, p2):
+    # Instância game ponto classe Player = p1;
+    # Instância game ponto classe Player = p2;
         self.p1 = p1
         self.p2 = p2
 
     def play_round(self):
+    # move1 = instância da classe Player chama o método move;
+    # o resultado é armazenado na variável
         move1 = self.p1.move()
         move2 = self.p2.move()
         print(f"Player 1: {move1}  Player 2: {move2}")
@@ -51,5 +55,5 @@ class Game:
 
 
 if __name__ == '__main__':
-    game = Game(Player(), Player())
+    game = Game(RandomPlayer(), RandomPlayer())
     game.play_game()
