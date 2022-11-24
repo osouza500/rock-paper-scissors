@@ -8,10 +8,13 @@ moves = ['rock', 'paper', 'scissors']
 """The Player class is the parent class for all of the Players
 in this game"""
 
+import random
+
 
 class Player:
     def move(self):
-        return 'rock'
+        result = ['rock', 'paper', 'scissors']
+        return random.choice(result)
 
     def learn(self, my_move, their_move):
         pass
@@ -22,9 +25,10 @@ def beats(one, two):
             (one == 'scissors' and two == 'paper') or
             (one == 'paper' and two == 'rock'))
 
-class RandomPlayer(Player):
+# class RandomPlayer(Player):
+#     def __init__(self, name):
+#         self.name = name
     
-
 
 class Game:
     def __init__(self, p1, p2):
