@@ -37,6 +37,11 @@ class Game:
         self.p1 = p1
         self.p2 = p2
 
+    def score(self, p1, p2):
+        p1_score = 0
+        p2_score = 0
+        
+
     def play_round(self):
     # move1 = instância da classe Player chama o método move;
     # o resultado é armazenado na variável
