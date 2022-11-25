@@ -26,6 +26,12 @@ class HumanPlayer(Player):
         result = input('Rock, paper or scissors?\n')
         return result
 
+# class ReflectPlayer(Player):
+#     pass
+
+# class CyclePlayer(Player):
+#     pass
+
 def beats(one, two):
     return ((one == 'rock' and two == 'scissors') or
             (one == 'scissors' and two == 'paper') or
