@@ -17,8 +17,13 @@ class RandomPlayer(Player):
 
 class HumanPlayer(Player):
     def move(self):
-        result = input('Rock, paper or scissors?\n')
-        return result
+        result = ['rock', 'paper', 'scissors']
+        while True:
+            player_move = input('Rock, paper or scissors?\n').lower()
+            if player_move not in result:
+                print("Type a valid input.")
+            else:
+                return player_move 
 
 
 class ReflectPlayer(Player):
