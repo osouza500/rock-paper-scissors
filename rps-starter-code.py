@@ -31,8 +31,14 @@ class ReflectPlayer(Player):
         p1_move = their_move
         return p1_move
 
-# class CyclePlayer(Player):
-#     pass
+class CyclePlayer(Player):
+    def learn(self, my_move):
+        result = ['rock', 'paper', 'scissors']
+        if my_move in result:
+            result.remove(my_move)
+            return random.choice(result)
+        
+        
 
 def beats(one, two):
     return ((one == 'rock' and two == 'scissors') or
