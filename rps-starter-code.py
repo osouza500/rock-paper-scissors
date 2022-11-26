@@ -1,6 +1,10 @@
 import random
 import time
 
+def print_pause(message):
+    time.sleep(1)
+    print(message)
+
 
 class Player:
     def move(self):
@@ -19,9 +23,10 @@ class HumanPlayer(Player):
     def move(self):
         result = ['rock', 'paper', 'scissors']
         while True:
-            player_move = input('Rock, paper or scissors?\n').lower()
+            print_pause("Rock, paper or scissors?")
+            player_move = input().lower()
             if player_move not in result:
-                print("Type a valid input.")
+                print_pause("Type a valid input.")
             else:
                 return player_move 
 
@@ -54,29 +59,29 @@ class Game:
     def play_game(self):
         p1_score = 0
         p2_score = 0
-        print("Game start!")
+        print_pause("Game start!")
         for round in range(3):
-            print(f"Round {round}:")
+            print_pause(f"Round {round}:")
             move1 = self.p1.move()
             if round == 0:
                 move2 = self.p2.move()
-            print(f"Player 1: {move1}  Player 2: {move2}")
+            print_pause(f"Player 1: {move1}  Player 2: {move2}")
             if beats(move1, move2) is True:
                 p1_score += 1
-                print("Player One won.")
-                print(f"Score = Player One: {p1_score}, "
-                      f"Player Two: {p2_score}.")
+                print_pause("Player One won.")
+                print_pause(f"Score = Player One: {p1_score}, "
+                            f"Player Two: {p2_score}.")
             elif beats(move2, move1) is True:
                 p2_score += 1
-                print("Player Two won.")
-                print(f"Score = Player One: {p1_score}, "
-                      f"Player Two: {p2_score}.")
+                print_pause("Player Two won.")
+                print_pause(f"Score = Player One: {p1_score}, "
+                            f"Player Two: {p2_score}.")
             elif move1 == move2:
-                print("Tie!")
-                print(f"Score = Player One: {p1_score}, "
-                      f"Player Two: {p2_score}.")
+                print_pause("Tie!")
+                print_pause(f"Score = Player One: {p1_score}, "
+                            f"Player Two: {p2_score}.")
             move2 = self.p2.learn(move2, move1)
-        print("Game over!")
+        print_pause("Game over!")
 
 
 if __name__ == '__main__':
