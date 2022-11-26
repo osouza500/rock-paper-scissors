@@ -27,10 +27,9 @@ class HumanPlayer(Player):
         return result
 
 class ReflectPlayer(Player):
-    def learn(self, their_move):
+    def learn(self, their_move):  
         p1_move = their_move
         return p1_move
-           
 
 # class CyclePlayer(Player):
 #     pass
@@ -53,7 +52,8 @@ class Game:
         for round in range(3):
             print(f"Round {round}:")
             move1 = self.p1.move()
-            move2 = self.p2.move()
+            if round == 0:
+                move2 = self.p2.move()
             print(f"Player 1: {move1}  Player 2: {move2}")
             if beats(move1, move2) == True:
                 p1_score += 1
@@ -66,7 +66,7 @@ class Game:
             elif move1 == move2:
                 print("Tie!")
                 print(f"Score = Player One: {p1_score}, Player Two: {p2_score}.")
-            move2 = self.p2.learn(move1)    
+            move2 = self.p2.learn(move1)   
         print("Game over!")
 
 
