@@ -26,8 +26,11 @@ class HumanPlayer(Player):
         result = input('Rock, paper or scissors?\n')
         return result
 
-# class ReflectPlayer(Player):
-#     pass
+class ReflectPlayer(Player):
+     def learn(self, their_move):
+        p1_move = their_move
+        return p1_move
+           
 
 # class CyclePlayer(Player):
 #     pass
@@ -50,7 +53,7 @@ class Game:
         for round in range(3):
             print(f"Round {round}:")
             move1 = self.p1.move()
-            move2 = self.p2.move()
+            move2 = self.p2.move(round, move1) 
             print(f"Player 1: {move1}  Player 2: {move2}")
             if beats(move1, move2) == True:
                 p1_score += 1
@@ -63,9 +66,18 @@ class Game:
             elif move1 == move2:
                 print("Tie!")
                 print(f"Score = Player One: {p1_score}, Player Two: {p2_score}.")
+            self.p1.learn(move1, move2)
+            self.p2.learn(move2, move1)    
         print("Game over!")
 
 
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), RandomPlayer())
+    game = Game(HumanPlayer(), ReflectPlayer())
     game.play_game()
+
+    # def play_round(self):
+    #     move1 = self.p1.move()
+    #     move2 = self.p2.move()
+    #     print(f"Player 1: {move1}  Player 2: {move2}")
+        # self.p1.learn(move1, move2)
+        # self.p2.learn(move2, move1)
