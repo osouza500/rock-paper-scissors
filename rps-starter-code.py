@@ -1,9 +1,29 @@
 import random
 import time
 
+
 def print_pause(message):
     time.sleep(1)
     print(message)
+
+
+def continue_quit():
+    print_pause("Play again? Y/N.")
+    answer = input().lower()
+    if answer == "y":
+        game.play_game()
+    elif answer == "n":
+        print_pause("Good bye!")
+        quit()
+    else:
+        print_pause("Type a valid input.")
+        continue_quit()
+
+
+def beats(one, two):
+    return ((one == 'rock' and two == 'scissors') or
+            (one == 'scissors' and two == 'paper') or
+            (one == 'paper' and two == 'rock'))
 
 
 class Player:
@@ -28,7 +48,7 @@ class HumanPlayer(Player):
             if player_move not in result:
                 print_pause("Type a valid input.")
             else:
-                return player_move 
+                return player_move
 
 
 class ReflectPlayer(Player):
@@ -43,12 +63,6 @@ class CyclePlayer(Player):
         if my_move in result:
             result.remove(my_move)
             return random.choice(result)
-
-
-def beats(one, two):
-    return ((one == 'rock' and two == 'scissors') or
-            (one == 'scissors' and two == 'paper') or
-            (one == 'paper' and two == 'rock'))
 
 
 class Game:
@@ -82,6 +96,7 @@ class Game:
                             f"Player Two: {p2_score}.")
             move2 = self.p2.learn(move2, move1)
         print_pause("Game over!")
+        continue_quit()
 
 
 if __name__ == '__main__':
