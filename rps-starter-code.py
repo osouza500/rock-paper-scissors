@@ -10,9 +10,9 @@ def print_pause(message):
 def continue_quit():
     print_pause("Play again? Y/N.")
     answer = input().lower()
-    if answer == "y":
+    if answer == "y" or "yes":
         game.play_game()
-    elif answer == "n":
+    elif answer == "n" or "no":
         print_pause("Good bye!")
         quit()
     else:
@@ -66,35 +66,42 @@ class CyclePlayer(Player):
 
 
 class Game:
+    p1_score = 0
+    p2_score = 0
+
+
     def __init__(self, p1, p2):
         self.p1 = p1
         self.p2 = p2
 
+
+    def play_round(self):
+        move1 = self.p1.move()
+        if round == 0:
+            move2 = self.p2.move()
+        print_pause(f"Player 1: {move1}  Player 2: {move2}")
+        if beats(move1, move2) is True:
+            self.p1_score += 1
+            print_pause("Player One won.")
+            print(f"Score = Player One: {self.p1_score}, "
+                  f"Player Two: {self.p2_score}.")
+        elif beats(move2, move1) is True:
+            self.p2_score += 1
+            print_pause("Player Two won.")
+            print(f"Score = Player One: {self.p1_score}, "
+                  f"Player Two: {self.p2_score}.")
+        elif move1 == move2:
+            print_pause("Tie!")
+            print(f"Score = Player One: {self.p1_score}, "
+                  f"Player Two: {self.p2_score}.")
+        move2 = self.p2.learn(move2, move1)
+
+
     def play_game(self):
-        p1_score = 0
-        p2_score = 0
         print_pause("Game start!")
         for round in range(3):
             print_pause(f"Round {round}:")
-            move1 = self.p1.move()
-            if round == 0:
-                move2 = self.p2.move()
-            print_pause(f"Player 1: {move1}  Player 2: {move2}")
-            if beats(move1, move2) is True:
-                p1_score += 1
-                print_pause("Player One won.")
-                print_pause(f"Score = Player One: {p1_score}, "
-                            f"Player Two: {p2_score}.")
-            elif beats(move2, move1) is True:
-                p2_score += 1
-                print_pause("Player Two won.")
-                print_pause(f"Score = Player One: {p1_score}, "
-                            f"Player Two: {p2_score}.")
-            elif move1 == move2:
-                print_pause("Tie!")
-                print_pause(f"Score = Player One: {p1_score}, "
-                            f"Player Two: {p2_score}.")
-            move2 = self.p2.learn(move2, move1)
+            self.play_round()
         print_pause("Game over!")
         continue_quit()
 
@@ -103,9 +110,4 @@ if __name__ == '__main__':
     game = Game(HumanPlayer(), CyclePlayer())
     game.play_game()
 
-    # def play_round(self, p1_score, p2_score):
-    #     move1 = self.p1.move()
-    #     move2 = self.p2.move()
-    #     print(f"Player 1: {move1}  Player 2: {move2}")
-    #     self.p1.learn(move1, move2)
-    #     self.p2.learn(move2, move1)
+
