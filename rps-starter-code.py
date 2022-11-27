@@ -68,6 +68,7 @@ class CyclePlayer(Player):
 class Game:
     p1_score = 0
     p2_score = 0
+    move3 = ""
 
 
     def __init__(self, p1, p2):
@@ -75,10 +76,11 @@ class Game:
         self.p2 = p2
 
 
-    def play_round(self):
+    def play_round(self, round):
         move1 = self.p1.move()
-        if round == 0:
-            move2 = self.p2.move()
+        move2 = self.p2.move()
+        if round > 0:
+            move2 = self.move3
         print_pause(f"Player 1: {move1}  Player 2: {move2}")
         if beats(move1, move2) is True:
             self.p1_score += 1
@@ -94,20 +96,20 @@ class Game:
             print_pause("Tie!")
             print(f"Score = Player One: {self.p1_score}, "
                   f"Player Two: {self.p2_score}.")
-        move2 = self.p2.learn(move2, move1)
+        self.move3 = self.p2.learn(move2, move1)
 
 
     def play_game(self):
         print_pause("Game start!")
         for round in range(3):
             print_pause(f"Round {round}:")
-            self.play_round()
+            self.play_round(round)
         print_pause("Game over!")
         continue_quit()
 
 
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), CyclePlayer())
+    game = Game(HumanPlayer(), ReflectPlayer())
     game.play_game()
 
 
