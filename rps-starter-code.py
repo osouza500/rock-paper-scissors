@@ -29,8 +29,9 @@ def beats(one, two):
 
 
 class Player:
+
     def move(self):
-        return 'rock'
+        return "rock"
 
     def learn(self, my_move, their_move):
         pass
@@ -50,28 +51,31 @@ class HumanPlayer(Player):
                 print_pause("Type a valid input.")
             else:
                 return player_move
+    
 
 
-# class ReflectPlayer(Player):
-#     def learn(self, my_move, their_move):
-#         return their_move
+class ReflectPlayer(Player):
+    p1_previous_move = ""
+
+    def learn(self, my_move, their_move):
+        ReflectPlayer.p1_previous_move = their_move
 
 
 class CyclePlayer(Player):
-    def learn(self, my_move):
-        p2_move = my_move
-        return p2_move
+    p2_previous_move = ""
 
     def move(self, round):
-        while True:
-            if round == 0:
-                return random.choice(moves)
-            elif round > 0:
-                print(CyclePlayer.learn)
-                # iv_moves = ['rock', 'paper', 'scissors']
-                # if CyclePlayer.learn in iv_moves:
-                #     iv_moves.remove(CyclePlayer.learn)
-                #     return random.choice(moves)
+        
+        if round == 0:
+            return random.choice(moves)
+        elif round > 0:
+            iv_moves = ['rock', 'paper', 'scissors']
+            if CyclePlayer.p2_previous_move in iv_moves:
+                iv_moves.remove(CyclePlayer.p2_previous_move)
+                return random.choice(iv_moves)
+
+    def learn(self, my_move, their_move):
+        CyclePlayer.p2_previous_move = my_move
 
 
 class Game:
@@ -86,8 +90,6 @@ class Game:
     def play_round(self, round):
         move1 = HumanPlayer.move(self)
         move2 = CyclePlayer.move(self, round)
-        # if round > 0 and type(self.p2) != RandomPlayer:
-        #     move2 = self.previous_move
         print_pause(f"Player 1: {move1}  Player 2: {move2}")
         if beats(move1, move2) is True:
             self.p1_score += 1
@@ -112,8 +114,9 @@ class Game:
                 print_pause("Victory for Player Two!")
             else:
                 print_pause("Tie!")
-        CyclePlayer.learn(self, move2)
-        # self.previous_move = self.p2.learn(move2, move1)
+        CyclePlayer.learn(self, move1, move2)        
+
+        
 
     def play_game(self):
         self.p1_score = 0
@@ -129,3 +132,7 @@ class Game:
 if __name__ == '__main__':
     game = Game(Player(), Player())
     game.play_game()
+
+# if round > 0 and type(self.p2) != RandomPlayer:
+        #     move2 = self.previous_move
+        # self.previous_move = self.p2.learn(move2, move1)
