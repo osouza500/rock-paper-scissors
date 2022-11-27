@@ -30,7 +30,7 @@ def beats(one, two):
 
 class Player:
     def move(self):
-        return random.choice(moves)
+        return 'rock'
 
     def learn(self, my_move, their_move):
         pass
@@ -81,7 +81,7 @@ class Game:
         self.p2 = p2
 
     def play_round(self, round):
-        move1 = self.p1.move()
+        move1 = HumanPlayer.move(self)
         move2 = self.p2.move()
         if round > 0 and type(self.p2) != RandomPlayer:
             move2 = self.previous_move
@@ -123,5 +123,5 @@ class Game:
 
 
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), CyclePlayer())
+    game = Game(Player(), Player())
     game.play_game()
