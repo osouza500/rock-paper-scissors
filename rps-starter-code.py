@@ -79,7 +79,7 @@ class Game:
     def play_round(self, round):
         move1 = self.p1.move()
         move2 = self.p2.move()
-        if round > 0:
+        if round > 0 and type(self.p2) != RandomPlayer:
             move2 = self.move3
         print_pause(f"Player 1: {move1}  Player 2: {move2}")
         if beats(move1, move2) is True:
@@ -100,6 +100,8 @@ class Game:
 
 
     def play_game(self):
+        self.p1_score = 0
+        self.p2_score = 0
         print_pause("Game start!")
         for round in range(3):
             print_pause(f"Round {round}:")
