@@ -3,6 +3,7 @@ import time
 
 moves = ["rock", "paper", "scissors"]
 
+
 def print_pause(message):
     time.sleep(1)
     print(message)
@@ -71,17 +72,13 @@ class RockPlayer(Player):
 
 
 class Game:
-    # store the score and both human and machine 
-    # previous moves
     p1_score = 0
     p2_score = 0
     previous_move = ""
 
-
     def __init__(self, p1, p2):
         self.p1 = p1
         self.p2 = p2
-
 
     def play_round(self, round):
         move1 = self.p1.move()
@@ -112,14 +109,9 @@ class Game:
                 print_pause("Victory for Player Two!")
             else:
                 print_pause("Tie!")
-        # assign human or machine previous move (accordingly to the 
-        # opponent subclass) to previous_move class variable
         self.previous_move = self.p2.learn(move2, move1)
 
-
     def play_game(self):
-    # restart the score everytime game.play_game()
-    # is called
         self.p1_score = 0
         self.p2_score = 0
         print_pause("Game start!\n")
