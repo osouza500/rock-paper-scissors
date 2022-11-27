@@ -66,9 +66,11 @@ class CyclePlayer(Player):
 
 
 class Game:
+    # store scores and both human and machine 
+    # previous moves
     p1_score = 0
     p2_score = 0
-    move3 = ""
+    previous_move = ""
 
 
     def __init__(self, p1, p2):
@@ -80,7 +82,7 @@ class Game:
         move1 = self.p1.move()
         move2 = self.p2.move()
         if round > 0 and type(self.p2) != RandomPlayer:
-            move2 = self.move3
+            move2 = self.previous_move
         print_pause(f"Player 1: {move1}  Player 2: {move2}")
         if beats(move1, move2) is True:
             self.p1_score += 1
@@ -96,10 +98,23 @@ class Game:
             print_pause("Tie!")
             print(f"Score = Player One: {self.p1_score}, "
                   f"Player Two: {self.p2_score}.")
-        self.move3 = self.p2.learn(move2, move1)
+        if round == 2:
+            print_pause(f"Final score: Player One {self.p1_score}, "
+                        f"Player Two {self.p2_score}.")
+            if self.p1_score > self.p2_score:
+                print_pause("Victory for Player One!")
+            elif self.p2_score > self.p2_score:
+                print_pause("Victory for Player Two!")
+            else:
+                print_pause("Tie!")
+        # assign human or machine previous move (accordingly to the 
+        # opponent subclass) to previous_move class variable
+        self.previous_move = self.p2.learn(move2, move1)
 
 
     def play_game(self):
+    # restart score everytime game.play_game()
+    # is called
         self.p1_score = 0
         self.p2_score = 0
         print_pause("Game start!")
@@ -113,5 +128,3 @@ class Game:
 if __name__ == '__main__':
     game = Game(HumanPlayer(), ReflectPlayer())
     game.play_game()
-
-
