@@ -5,20 +5,20 @@ moves = ["rock", "paper", "scissors"]
 
 
 def print_pause(message):
-    time.sleep(1)
+    time.sleep(0)
     print(message)
 
 
 def continue_quit():
     print_pause("Play again? Y/N.")
     answer = input().lower()
-    if answer == "y" or "yes":
+    if answer == "y":
         game.play_game()
-    elif answer == "n" or "no":
+    elif answer == "n":
         print_pause("Good bye!")
         quit()
     else:
-        print_pause("Type a valid input.")
+        print_pause("Type a valid input.\n")
         continue_quit()
 
 
@@ -60,7 +60,7 @@ class ReflectPlayer(Player):
 class CyclePlayer(Player):
     def learn(self, my_move, their_move):
         iv_moves = ['rock', 'paper', 'scissors']
-        if my_move in result:
+        if my_move in iv_moves:
             iv_moves.remove(my_move)
             return random.choice(iv_moves)
 
@@ -123,5 +123,5 @@ class Game:
 
 
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), RandomPlayer())
+    game = Game(HumanPlayer(), CyclePlayer())
     game.play_game()
