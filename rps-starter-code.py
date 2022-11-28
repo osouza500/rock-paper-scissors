@@ -5,7 +5,7 @@ moves = ["rock", "paper", "scissors"]
 
 
 def print_pause(message):
-    time.sleep(0)
+    time.sleep(.5)
     print(message)
 
 
@@ -55,7 +55,7 @@ class ReflectPlayer(Player):
     previous_move = ""
 
     # the round parameter tells the current round
-    # and determines whether 
+    # and determines whether
     def move(self, round):
         if round == 0:
             return random.choice(moves)
@@ -93,9 +93,9 @@ class Game:
     def play_round(self, round):
         # a different strategy for each round
         strategies = (
-                     Player.move(self), 
-                     RandomPlayer.move(self), 
-                     ReflectPlayer.move(self, round), 
+                     Player.move(self),
+                     RandomPlayer.move(self),
+                     ReflectPlayer.move(self, round),
                      CyclePlayer.move(self, round)
                      )
         move1 = HumanPlayer.move(self)
@@ -128,9 +128,8 @@ class Game:
         # stores human player move for ReflectPlayer subclass
         # and machine move for CyclePlayer subclass
         ReflectPlayer.learn(self, move1)
-        CyclePlayer.learn(self, move2)        
+        CyclePlayer.learn(self, move2)
 
-        
     def play_game(self):
         # restart the score everytime game.play_game()
         # is called
