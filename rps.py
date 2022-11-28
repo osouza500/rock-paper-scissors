@@ -127,7 +127,7 @@ class Game:
                         f"Player Two {self.p2_score}.")
             if self.p1_score > self.p2_score:
                 print_pause("Victory for Player One!")
-            elif self.p2_score > self.p2_score:
+            elif self.p2_score > self.p1_score:
                 print_pause("Victory for Player Two!")
             else:
                 print_pause("Tie!")
@@ -139,10 +139,11 @@ class Game:
     def play_game(self):
         # restart the score everytime game.play_game()
         # is called
+        self.round = 3
         self.p1_score = 0
         self.p2_score = 0
         print_pause("Game start!\n")
-        for round in range(3):
+        for round in range(self.round):
             print_pause(f"Round {round}:")
             self.play_round(round)
         print_pause("Game over!")
