@@ -83,28 +83,12 @@ class CyclePlayer(Player):
         elif round % 3 == 2:
             return CyclePlayer.moves[1]
 
-
-        # if round == 0:
-        #     return random.choice(CyclePlayer.moves)
-        # if round == 1:
-        #     CyclePlayer.moves.remove(CyclePlayer.first_move)
-        #     if round % 3 == 1:
-        #         return CyclePlayer.moves[0]
-        #     elif round % 3 == 2:
-        #         return CyclePlayer.moves[1]
-        # if round > 1:
-        #     if round % 3 == 0:
-        #         return CyclePlayer.first_move
-        #     elif round % 3 == 1:
-        #         return CyclePlayer.moves[0]
-        #     elif round % 3 == 2:
-        #         return CyclePlayer.moves[1]
-
     def learn(self, my_move):
         CyclePlayer.first_move = my_move
 
 
 class Game:
+    check = True
     p1_score = 0
     p2_score = 0
 
@@ -147,8 +131,9 @@ class Game:
                 else:
                     print_pause("Tie!")
             ReflectPlayer.learn(self, move1)
-            if round == 0:
+            if self.check == True:
                 CyclePlayer.learn(self, move2)
+                self.check = False
 
 
     def play_game(self):
