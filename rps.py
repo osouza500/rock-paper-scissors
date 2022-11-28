@@ -77,6 +77,9 @@ class CyclePlayer(Player):
         if round == 0:
             return random.choice(moves)
         else:
+            # removes machine previous move from the list
+            # and randomically choose between the other 
+            # two moves
             cp_moves.remove(CyclePlayer.previous_move)
             return random.choice(cp_moves)
 
