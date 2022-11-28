@@ -55,8 +55,6 @@ class HumanPlayer(Player):
 class ReflectPlayer(Player):
     previous_move = ""
 
-    # the first move is played randomically; second and
-    # third moves are based on human player previous move
     def move(self, round):
         if round == 0:
             return random.choice(moves)
@@ -69,26 +67,25 @@ class ReflectPlayer(Player):
 
 class CyclePlayer(Player):
     previous_move = ""
+    cycle_move = ""
 
-    # the first move is played randomically; second and
-    # third moves are based on machine player previous move
     def move(self, round):
-        cp_moves = ['rock', 'paper', 'scissors']
-        if round == 0:
-            return random.choice(moves)
-        else:
-            # removes machine previous move from the list
-            # and randomically choose between the other 
-            # two moves
-            cp_moves.remove(CyclePlayer.previous_move)
-            return random.choice(cp_moves)
+        if round % 3 == 0:
+            CyclePlayer.cycle_move = "rock"
+        elif round % 3 == 1:
+            CyclePlayer.cycle_move = "paper"
+        elif round % 3 == 2:
+            CyclePlayer.cycle_move = "scissors"
+        return CyclePlayer.cycle_move
+        
+        
+            
 
     def learn(self, my_move):
         CyclePlayer.previous_move = my_move
 
 
 class Game:
-    # store the current match score
     p1_score = 0
     p2_score = 0
 
@@ -97,16 +94,15 @@ class Game:
         self.p2 = p2
 
     def play_round(self, round):
-        # a different strategy for each round
-        strategies = (
-                     Player.move(self),
-                     RandomPlayer.move(self),
-                     ReflectPlayer.move(self, round),
-                     CyclePlayer.move(self, round)
-                     )
+        # strategies = (
+        #              Player.move(self),
+        #              RandomPlayer.move(self),
+        #              ReflectPlayer.move(self, round),
+        #              CyclePlayer.move(self, round)
+        #              )
         move1 = HumanPlayer.move(self)
-        # pick a strategy randomically
-        move2 = random.choice(strategies)
+        move2 = CyclePlayer.move(self, round)
+        # move2 = random.choice(strategies)
         print_pause(f"Player 1: {move1}  Player 2: {move2}")
         if beats(move1, move2) is True:
             self.p1_score += 1
@@ -122,7 +118,7 @@ class Game:
             print_pause("Tie!")
             print(f"Score = Player One: {self.p1_score}, "
                   f"Player Two: {self.p2_score}.\n")
-        if round == 2:
+        if round == 5:
             print_pause(f"Final score: Player One {self.p1_score}, "
                         f"Player Two {self.p2_score}.")
             if self.p1_score > self.p2_score:
@@ -131,19 +127,15 @@ class Game:
                 print_pause("Victory for Player Two!")
             else:
                 print_pause("Tie!")
-        # stores human player move for ReflectPlayer subclass
-        # and machine move for CyclePlayer subclass
-        ReflectPlayer.learn(self, move1)
-        CyclePlayer.learn(self, move2)
+        # ReflectPlayer.learn(self, move1)
+        # CyclePlayer.learn(self, move2)
 
     def play_game(self):
-        # restart the score everytime game.play_game()
-        # is called
-        self.round = 3
+        # self.round = 3
         self.p1_score = 0
         self.p2_score = 0
         print_pause("Game start!\n")
-        for round in range(self.round):
+        for round in range(6):
             print_pause(f"Round {round}:")
             self.play_round(round)
         print_pause("Game over!")
