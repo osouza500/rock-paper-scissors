@@ -51,11 +51,17 @@ class HumanPlayer(Player):
             return player_move
 
 
-# class ReflectPlayer(Player):
-#     p1_previous_move = ""
+class ReflectPlayer(Player):
+    previous_move = ""
 
-#     def learn(self, their_move):
-#         ReflectPlayer.p1_previous_move = their_move
+    def move(self, round):
+        if round == 0:
+            return random.choice(moves)
+        else:
+            return ReflectPlayer.previous_move
+
+    def learn(self, their_move):
+        ReflectPlayer.previous_move = their_move
 
 
 class CyclePlayer(Player):
@@ -84,7 +90,7 @@ class Game:
 
     def play_round(self, round):
         move1 = HumanPlayer.move(self)
-        move2 = CyclePlayer.move(self, round)
+        move2 = ReflectPlayer.move(self, round)
         print_pause(f"Player 1: {move1}  Player 2: {move2}")
         if beats(move1, move2) is True:
             self.p1_score += 1
@@ -109,7 +115,7 @@ class Game:
                 print_pause("Victory for Player Two!")
             else:
                 print_pause("Tie!")
-        CyclePlayer.learn(self, move2)        
+        ReflectPlayer.learn(self, move1)        
 
         
 
