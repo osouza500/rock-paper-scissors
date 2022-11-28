@@ -54,6 +54,8 @@ class HumanPlayer(Player):
 class ReflectPlayer(Player):
     previous_move = ""
 
+    # the round parameter tells the current round
+    # and determines whether 
     def move(self, round):
         if round == 0:
             return random.choice(moves)
@@ -80,6 +82,7 @@ class CyclePlayer(Player):
 
 
 class Game:
+    # store the current match score
     p1_score = 0
     p2_score = 0
 
@@ -88,6 +91,7 @@ class Game:
         self.p2 = p2
 
     def play_round(self, round):
+        # a different strategy for each round
         strategies = (
                      Player.move(self), 
                      RandomPlayer.move(self), 
@@ -95,6 +99,7 @@ class Game:
                      CyclePlayer.move(self, round)
                      )
         move1 = HumanPlayer.move(self)
+        # pick a strategy randomically
         move2 = random.choice(strategies)
         print_pause(f"Player 1: {move1}  Player 2: {move2}")
         if beats(move1, move2) is True:
@@ -120,16 +125,15 @@ class Game:
                 print_pause("Victory for Player Two!")
             else:
                 print_pause("Tie!")
-        # está ignorando as instruções condicionais abaixo;
-        # move2 retorna uma jogada, não o jogador
-        # if move2 == ReflectPlayer.move(self, round):
-        #     ReflectPlayer.learn(self, move1)
-        # elif move2 == CyclePlayer.move(self, round):
-        #     CyclePlayer.learn(self, move2)        
+        # stores human player move for ReflectPlayer subclass
+        # and machine move for CyclePlayer subclass
+        ReflectPlayer.learn(self, move1)
+        CyclePlayer.learn(self, move2)        
 
         
-
     def play_game(self):
+        # restart the score everytime game.play_game()
+        # is called
         self.p1_score = 0
         self.p2_score = 0
         print_pause("Game start!\n")
@@ -143,7 +147,3 @@ class Game:
 if __name__ == '__main__':
     game = Game(Player(), Player())
     game.play_game()
-
-# if round > 0 and type(self.p2) != RandomPlayer:
-        #     move2 = self.previous_move
-        # self.previous_move = self.p2.learn(move2, move1)
