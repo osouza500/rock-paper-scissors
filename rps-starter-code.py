@@ -29,7 +29,6 @@ def beats(one, two):
 
 
 class Player:
-
     def move(self):
         return "rock"
 
@@ -44,38 +43,34 @@ class RandomPlayer(Player):
 
 class HumanPlayer(Player):
     def move(self):
-        while True:
-            print_pause("Rock, paper or scissors?")
-            player_move = input().lower()
-            if player_move not in moves:
-                print_pause("Type a valid input.")
-            else:
-                return player_move
-    
+        print_pause("Rock, paper or scissors?")
+        player_move = input().lower()
+        if player_move not in moves:
+            print_pause("Type a valid input.")
+        else:
+            return player_move
 
 
-class ReflectPlayer(Player):
-    p1_previous_move = ""
+# class ReflectPlayer(Player):
+#     p1_previous_move = ""
 
-    def learn(self, my_move, their_move):
-        ReflectPlayer.p1_previous_move = their_move
+#     def learn(self, their_move):
+#         ReflectPlayer.p1_previous_move = their_move
 
 
 class CyclePlayer(Player):
-    p2_previous_move = ""
+    previous_move = ""
 
     def move(self, round):
-        
+        cp_moves = ['rock', 'paper', 'scissors']
         if round == 0:
             return random.choice(moves)
-        elif round > 0:
-            iv_moves = ['rock', 'paper', 'scissors']
-            if CyclePlayer.p2_previous_move in iv_moves:
-                iv_moves.remove(CyclePlayer.p2_previous_move)
-                return random.choice(iv_moves)
+        else:
+            cp_moves.remove(CyclePlayer.previous_move)
+            return random.choice(cp_moves)
 
-    def learn(self, my_move, their_move):
-        CyclePlayer.p2_previous_move = my_move
+    def learn(self, my_move):
+        CyclePlayer.previous_move = my_move
 
 
 class Game:
@@ -114,7 +109,7 @@ class Game:
                 print_pause("Victory for Player Two!")
             else:
                 print_pause("Tie!")
-        CyclePlayer.learn(self, move1, move2)        
+        CyclePlayer.learn(self, move2)        
 
         
 
