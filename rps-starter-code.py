@@ -82,15 +82,20 @@ class CyclePlayer(Player):
 class Game:
     p1_score = 0
     p2_score = 0
-    previous_move = ""
 
     def __init__(self, p1, p2):
         self.p1 = p1
         self.p2 = p2
 
     def play_round(self, round):
+        strategies = (
+                     Player.move(self), 
+                     RandomPlayer.move(self), 
+                     ReflectPlayer.move(self, round), 
+                     CyclePlayer.move(self, round)
+                     )
         move1 = HumanPlayer.move(self)
-        move2 = ReflectPlayer.move(self, round)
+        move2 = random.choice(strategies)
         print_pause(f"Player 1: {move1}  Player 2: {move2}")
         if beats(move1, move2) is True:
             self.p1_score += 1
@@ -115,7 +120,12 @@ class Game:
                 print_pause("Victory for Player Two!")
             else:
                 print_pause("Tie!")
-        ReflectPlayer.learn(self, move1)        
+        # está ignorando as instruções condicionais abaixo;
+        # move2 retorna uma jogada, não o jogador
+        # if move2 == ReflectPlayer.move(self, round):
+        #     ReflectPlayer.learn(self, move1)
+        # elif move2 == CyclePlayer.move(self, round):
+        #     CyclePlayer.learn(self, move2)        
 
         
 
