@@ -43,19 +43,20 @@ class RandomPlayer(Player):
 
 class HumanPlayer(Player):
     def move(self):
-        print_pause("Rock, paper or scissors?")
-        player_move = input().lower()
-        if player_move not in moves:
-            print_pause("Type a valid input.")
-        else:
-            return player_move
+        while True:
+            print_pause("Rock, paper or scissors?")
+            player_move = input().lower()
+            if player_move not in moves:
+                print_pause("Type a valid input.")
+            else:
+                return player_move
 
 
 class ReflectPlayer(Player):
     previous_move = ""
 
-    # the round parameter tells the current round
-    # and determines whether
+    # the first move is played randomically; second and
+    # third moves are based on human player previous move
     def move(self, round):
         if round == 0:
             return random.choice(moves)
@@ -69,6 +70,8 @@ class ReflectPlayer(Player):
 class CyclePlayer(Player):
     previous_move = ""
 
+    # the first move is played randomically; second and
+    # third moves are based on machine player previous move
     def move(self, round):
         cp_moves = ['rock', 'paper', 'scissors']
         if round == 0:
