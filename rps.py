@@ -29,7 +29,6 @@ def beats(one, two):
 
 
 class Player:
-    check = True
     my_move = random.choice(moves)
     their_move = random.choice(moves)
 
@@ -57,13 +56,8 @@ class HumanPlayer(Player):
 
 
 class ReflectPlayer(Player):
-
     def move(self):
-        if Player.check is True:
-            Player.check = False
-            return Player.my_move
-        else:
-            return Player.their_move
+        return Player.their_move
 
     def learn(self, my_move, their_move):
         Player.their_move = my_move
@@ -71,25 +65,18 @@ class ReflectPlayer(Player):
 
 class CyclePlayer(Player):
     def move(self):
-        if Player.check is True:
-            Player.check = False
-            return Player.my_move
         if Player.my_move == "rock":
-            Player.my_move = "paper"
             return "paper"
         elif Player.my_move == "paper":
-            Player.my_move = "scissors"
             return "scissors"
         elif Player.my_move == "scissors":
-            Player.my_move = "rock" 
             return "rock"
 
     def learn(self, my_move, their_move):
-        Player.my_move = my_move
+        Player.my_move = their_move
 
 
 class Game:
-    check = True
     p1_score = 0
     p2_score = 0
 
@@ -98,44 +85,40 @@ class Game:
         self.p2 = p2
 
     def play_round(self, round):
-            # strategies = (
-            #             Player.move(self),
-            #             RandomPlayer.move(self),
-            #             ReflectPlayer.move(self),
-            #             CyclePlayer.move(self)
-            #             )
-            move1 = HumanPlayer.move(self)
-            move2 = ReflectPlayer.move(self)
-            # move2 = random.choice(strategies)
-            print_pause(f"Player 1: {move1}  Player 2: {move2}")
-            if beats(move1, move2) is True:
-                self.p1_score += 1
-                print_pause("Player One won.")
-                print(f"Score = Player One: {self.p1_score}, "
-                    f"Player Two: {self.p2_score}.\n")
-            elif beats(move2, move1) is True:
-                self.p2_score += 1
-                print_pause("Player Two won.")
-                print(f"Score = Player One: {self.p1_score}, "
-                    f"Player Two: {self.p2_score}.\n")
-            elif move1 == move2:
+        strategies = (
+                     Player.move(self),
+                     RandomPlayer.move(self),
+                     ReflectPlayer.move(self),
+                     CyclePlayer.move(self)
+                     )
+        move1 = HumanPlayer.move(self)
+        move2 = random.choice(strategies)
+        print_pause(f"Player 1: {move1}  Player 2: {move2}")
+        if beats(move1, move2) is True:
+            self.p1_score += 1
+            print_pause("Player One won.")
+            print(f"Score = Player One: {self.p1_score}, "
+                  f"Player Two: {self.p2_score}.\n")
+        elif beats(move2, move1) is True:
+            self.p2_score += 1
+            print_pause("Player Two won.")
+            print(f"Score = Player One: {self.p1_score}, "
+                  f"Player Two: {self.p2_score}.\n")
+        elif move1 == move2:
+            print_pause("Tie!")
+            print(f"Score = Player One: {self.p1_score}, "
+                  f"Player Two: {self.p2_score}.\n")
+        if round == 6:
+            print_pause(f"Final score: Player One {self.p1_score}, "
+                        f"Player Two {self.p2_score}.")
+            if self.p1_score > self.p2_score:
+                print_pause("Victory for Player One!")
+            elif self.p2_score > self.p1_score:
+                print_pause("Victory for Player Two!")
+            else:
                 print_pause("Tie!")
-                print(f"Score = Player One: {self.p1_score}, "
-                    f"Player Two: {self.p2_score}.\n")
-            if round == 5:
-                print_pause(f"Final score: Player One {self.p1_score}, "
-                            f"Player Two {self.p2_score}.")
-                if self.p1_score > self.p2_score:
-                    print_pause("Victory for Player One!")
-                elif self.p2_score > self.p1_score:
-                    print_pause("Victory for Player Two!")
-                else:
-                    print_pause("Tie!")
-            ReflectPlayer.learn(self, move1, move2)
-            if self.check is True:
-                self.check = False
-                CyclePlayer.learn(self, move1, move2)
-
+        ReflectPlayer.learn(self, move1, move2)
+        CyclePlayer.learn(self, move1, move2)
 
     def play_game(self):
         self.rounds = 6
