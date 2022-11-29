@@ -5,7 +5,7 @@ moves = ["rock", "paper", "scissors"]
 
 
 def print_pause(message):
-    time.sleep(0)
+    time.sleep(.5)
     print(message)
 
 
