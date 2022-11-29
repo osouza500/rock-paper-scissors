@@ -29,6 +29,10 @@ def beats(one, two):
 
 
 class Player:
+    check = True
+    my_move = random.choice(moves)
+    their_move = random.choice(moves)
+
     def move(self):
         return "rock"
 
@@ -53,38 +57,35 @@ class HumanPlayer(Player):
 
 
 class ReflectPlayer(Player):
-    previous_move = ""
 
-    def move(self, round):
-        if round == 0:
-            return random.choice(moves)
+    def move(self):
+        if Player.check is True:
+            Player.check = False
+            return Player.my_move
         else:
-            return ReflectPlayer.previous_move
+            return Player.their_move
 
-    def learn(self, their_move):
-        ReflectPlayer.previous_move = their_move
+    def learn(self, my_move, their_move):
+        Player.their_move = my_move
 
 
 class CyclePlayer(Player):
-    check = True
-    first_move = ""
-    moves = ["rock", "paper", "scissors"]
+    def move(self):
+        if Player.check is True:
+            Player.check = False
+            return Player.my_move
+        if Player.my_move == "rock":
+            Player.my_move = "paper"
+            return "paper"
+        elif Player.my_move == "paper":
+            Player.my_move = "scissors"
+            return "scissors"
+        elif Player.my_move == "scissors":
+            Player.my_move = "rock" 
+            return "rock"
 
-    def move(self, round):
-        if CyclePlayer.check == True:
-            opening_move = random.choice(CyclePlayer.moves)
-            CyclePlayer.moves.remove(opening_move)
-            CyclePlayer.check = False
-            return opening_move        
-        if round % 3 == 0:
-            return CyclePlayer.first_move
-        elif round % 3 == 1:
-            return CyclePlayer.moves[0]
-        elif round % 3 == 2:
-            return CyclePlayer.moves[1]
-
-    def learn(self, my_move):
-        CyclePlayer.first_move = my_move
+    def learn(self, my_move, their_move):
+        Player.my_move = my_move
 
 
 class Game:
@@ -100,11 +101,11 @@ class Game:
             # strategies = (
             #             Player.move(self),
             #             RandomPlayer.move(self),
-            #             ReflectPlayer.move(self, round),
-            #             CyclePlayer.move(self, round)
+            #             ReflectPlayer.move(self),
+            #             CyclePlayer.move(self)
             #             )
             move1 = HumanPlayer.move(self)
-            move2 = CyclePlayer.move(self, round)
+            move2 = ReflectPlayer.move(self)
             # move2 = random.choice(strategies)
             print_pause(f"Player 1: {move1}  Player 2: {move2}")
             if beats(move1, move2) is True:
@@ -130,10 +131,10 @@ class Game:
                     print_pause("Victory for Player Two!")
                 else:
                     print_pause("Tie!")
-            ReflectPlayer.learn(self, move1)
-            if self.check == True:
-                CyclePlayer.learn(self, move2)
+            ReflectPlayer.learn(self, move1, move2)
+            if self.check is True:
                 self.check = False
+                CyclePlayer.learn(self, move1, move2)
 
 
     def play_game(self):
