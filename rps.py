@@ -5,7 +5,7 @@ moves = ["rock", "paper", "scissors"]
 
 
 def print_pause(message):
-    time.sleep(0)
+    time.sleep(.5)
     print(message)
 
 
@@ -30,7 +30,7 @@ def beats(one, two):
 
 class Player:
     index = 0
-    check = True 
+    check = True
     my_move = random.choice(moves)
     their_move = random.choice(moves)
 
@@ -84,7 +84,7 @@ class CyclePlayer(Player):
         else:
             Player.index += 1
             return moves[0]
-     
+
     def learn(self, my_move, their_move):
         Player.my_move = their_move
 
