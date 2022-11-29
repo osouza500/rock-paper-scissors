@@ -5,7 +5,7 @@ moves = ["rock", "paper", "scissors"]
 
 
 def print_pause(message):
-    time.sleep(.5)
+    time.sleep(0)
     print(message)
 
 
@@ -30,6 +30,7 @@ def beats(one, two):
 
 class Player:
     index = 0
+    check = True 
     my_move = random.choice(moves)
     their_move = random.choice(moves)
 
@@ -66,22 +67,30 @@ class ReflectPlayer(Player):
 
 class CyclePlayer(Player):
     def move(self):
+        previous_move = Player.my_move
+        if Player.check is True:
+            Player.check = False
+            Player.index += 1
+            return Player.their_move
         if Player.index % len(moves) == 0:
             Player.index += 1
-            return moves[0]
-        elif Player.index % len(moves) == 1:
+            return previous_move
+        elif Player.index % len(moves) == 1 and previous_move != moves[1]:
             Player.index += 1
             return moves[1]
-        elif Player.index % len(moves) == 2:
+        elif Player.index % len(moves) == 2 and previous_move != moves[2]:
             Player.index += 1
             return moves[2]
-
-        
+        else:
+            Player.index += 1
+            return moves[0]
+     
     def learn(self, my_move, their_move):
         Player.my_move = their_move
 
 
 class Game:
+    check = True
     p1_score = 0
     p2_score = 0
 
@@ -124,7 +133,9 @@ class Game:
             else:
                 print_pause("Tie!")
         ReflectPlayer.learn(self, move1, move2)
-        CyclePlayer.learn(self, move1, move2)
+        if self.check is True:
+            self.check = False
+            CyclePlayer.learn(self, move1, move2)
 
     def play_game(self):
         self.rounds = 6
