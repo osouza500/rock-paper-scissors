@@ -29,6 +29,7 @@ def beats(one, two):
 
 
 class Player:
+    index = 0
     my_move = random.choice(moves)
     their_move = random.choice(moves)
 
@@ -65,13 +66,17 @@ class ReflectPlayer(Player):
 
 class CyclePlayer(Player):
     def move(self):
-        if Player.my_move == "rock":
-            return "paper"
-        elif Player.my_move == "paper":
-            return "scissors"
-        elif Player.my_move == "scissors":
-            return "rock"
+        if Player.index % len(moves) == 0:
+            Player.index += 1
+            return moves[0]
+        elif Player.index % len(moves) == 1:
+            Player.index += 1
+            return moves[1]
+        elif Player.index % len(moves) == 2:
+            Player.index += 1
+            return moves[2]
 
+        
     def learn(self, my_move, their_move):
         Player.my_move = their_move
 
@@ -85,14 +90,15 @@ class Game:
         self.p2 = p2
 
     def play_round(self, round):
-        strategies = (
-                     Player.move(self),
-                     RandomPlayer.move(self),
-                     ReflectPlayer.move(self),
-                     CyclePlayer.move(self)
-                     )
+        # strategies = (
+        #              Player.move(self),
+        #              RandomPlayer.move(self),
+        #              ReflectPlayer.move(self),
+        #              CyclePlayer.move(self)
+        #              )
         move1 = HumanPlayer.move(self)
-        move2 = random.choice(strategies)
+        move2 = CyclePlayer.move(self)
+        # move2 = random.choice(strategies)
         print_pause(f"Player 1: {move1}  Player 2: {move2}")
         if beats(move1, move2) is True:
             self.p1_score += 1
@@ -108,7 +114,7 @@ class Game:
             print_pause("Tie!")
             print(f"Score = Player One: {self.p1_score}, "
                   f"Player Two: {self.p2_score}.\n")
-        if round == 6:
+        if round == 5:
             print_pause(f"Final score: Player One {self.p1_score}, "
                         f"Player Two {self.p2_score}.")
             if self.p1_score > self.p2_score:
