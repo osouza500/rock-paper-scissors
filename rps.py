@@ -84,7 +84,6 @@ class CyclePlayer(Player):
 
 
 class Game:
-    check = True
     p1_score = 0
     p2_score = 0
 
