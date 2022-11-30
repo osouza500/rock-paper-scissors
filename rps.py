@@ -46,7 +46,7 @@ class AllRockPlayer(Player):
 
 class RandomPlayer(Player):
     def move(self):
-        return self.their_move
+        return random.choice(moves)
 
 
 class HumanPlayer(Player):
@@ -55,39 +55,39 @@ class HumanPlayer(Player):
             move = input("Rock, paper or scissors?").lower()
             if move in moves:
                 return move
-            print(f"The move {move} is invalid. Try again!")
+            print(f"The move {move} is invalid. Try")
 
 
 class ReflectPlayer(Player):
     def move(self):
-        return Player.their_move
+        return self.their_move
 
     def learn(self, my_move, their_move):
-        Player.their_move = my_move
+        self.their_move = their_move
 
 
 class CyclePlayer(Player):
     def move(self):
-        previous_move = Player.my_move
-        if Player.check is True:
-            Player.check = False
-            Player.index += 1
-            return Player.their_move
-        if Player.index % len(moves) == 0:
-            Player.index += 1
+        previous_move = self.my_move
+        if self.check is True:
+            self.check = False
+            self.index += 1
+            return self.their_move
+        if self.index % len(moves) == 0:
+            self.index += 1
             return previous_move
-        elif Player.index % len(moves) == 1 and previous_move != moves[1]:
-            Player.index += 1
+        elif self.index % len(moves) == 1 and previous_move != moves[1]:
+            self.index += 1
             return moves[1]
-        elif Player.index % len(moves) == 2 and previous_move != moves[2]:
-            Player.index += 1
+        elif self.index % len(moves) == 2 and previous_move != moves[2]:
+            self.index += 1
             return moves[2]
         else:
-            Player.index += 1
+            self.index += 1
             return moves[0]
 
     def learn(self, my_move, their_move):
-        Player.my_move = their_move
+        self.my_move = my_move
 
 
 class Game:
