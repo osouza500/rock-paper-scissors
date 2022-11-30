@@ -46,7 +46,7 @@ class AllRockPlayer(Player):
 
 class RandomPlayer(Player):
     def move(self):
-        return random.choice(moves)
+        return self.their_move
 
 
 class HumanPlayer(Player):
