@@ -52,12 +52,10 @@ class RandomPlayer(Player):
 class HumanPlayer(Player):
     def move(self):
         while True:
-            print_pause("Rock, paper or scissors?")
-            player_move = input().lower()
-            if player_move not in moves:
-                print_pause("Type a valid input.")
-            else:
-                return player_move
+            move = input("Rock, paper or scissors?").lower()
+            if move in moves:
+                return move
+            print(f"The move {move} is invalid. Try again!")
 
 
 class ReflectPlayer(Player):
