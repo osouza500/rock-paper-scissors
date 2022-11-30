@@ -52,7 +52,7 @@ class RandomPlayer(Player):
 class HumanPlayer(Player):
     def move(self):
         while True:
-            move = input("Rock, paper or scissors?").lower()
+            move = input("Rock, paper or scissors?\n").lower()
             if move in moves:
                 return move
             print(f"The move {move} is invalid. Try")
@@ -112,7 +112,7 @@ class Game:
             print_pause("Player One won.")
             print(f"Score = Player One: {self.p1_score}, "
                   f"Player Two: {self.p2_score}.\n")
-        else:
+        elif beats(move2, move1):
             self.p2_score += 1
             print_pause("Player Two won.")
             print(f"Score = Player One: {self.p1_score}, "
@@ -126,14 +126,14 @@ class Game:
         for round in range(self.rounds):
             print_pause(f"Round {round}:")
             self.play_round(round)
-            print_pause(f"Final score: Player One {self.p1_score}, "
-                        f"Player Two {self.p2_score}.")
-            if self.p1_score > self.p2_score:
-                print_pause("Victory for Player One!")
-            elif self.p2_score > self.p1_score:
-                print_pause("Victory for Player Two!")
-            else:
-                print_pause("Tie!")
+        print_pause(f"Final score: Player One {self.p1_score}, "
+                    f"Player Two {self.p2_score}.")
+        if self.p1_score > self.p2_score:
+            print_pause("Victory for Player One!")
+        elif self.p2_score > self.p1_score:
+            print_pause("Victory for Player Two!")
+        else:
+            print_pause("Tie!")    
         print_pause("Game over!")
         continue_quit()
 
