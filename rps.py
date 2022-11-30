@@ -40,6 +40,9 @@ class Player:
     def learn(self, my_move, their_move):
         pass
 
+class AllRockPlayer(Player):
+    pass
+
 
 class RandomPlayer(Player):
     def move(self):
