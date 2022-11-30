@@ -5,7 +5,7 @@ moves = ["rock", "paper", "scissors"]
 
 
 def print_pause(message):
-    time.sleep(.5)
+    time.sleep(0)
     print(message)
 
 
@@ -30,15 +30,15 @@ def beats(one, two):
 
 class Player:
     index = 0
-    check = True
-    my_move = random.choice(moves)
-    their_move = random.choice(moves)
+    my_move = None
+    their_move = None
 
     def move(self):
         return "rock"
 
     def learn(self, my_move, their_move):
         pass
+
 
 class AllRockPlayer(Player):
     pass
@@ -60,6 +60,8 @@ class HumanPlayer(Player):
 
 class ReflectPlayer(Player):
     def move(self):
+        if self.their_move is None:
+            return random.choice(moves)
         return self.their_move
 
     def learn(self, my_move, their_move):
@@ -68,23 +70,14 @@ class ReflectPlayer(Player):
 
 class CyclePlayer(Player):
     def move(self):
-        previous_move = self.my_move
-        if self.check is True:
-            self.check = False
-            self.index += 1
-            return self.their_move
-        if self.index % len(moves) == 0:
-            self.index += 1
-            return previous_move
-        elif self.index % len(moves) == 1 and previous_move != moves[1]:
-            self.index += 1
-            return moves[1]
-        elif self.index % len(moves) == 2 and previous_move != moves[2]:
-            self.index += 1
-            return moves[2]
+        if self.my_move is None:
+            return random.choice(moves)
+        if self.my_move == 'rock':
+            return 'paper'
+        elif self.my_move == 'paper':
+            return 'scissors'
         else:
-            self.index += 1
-            return moves[0]
+            return 'rock'
 
     def learn(self, my_move, their_move):
         self.my_move = my_move
@@ -117,6 +110,7 @@ class Game:
             print_pause("Player Two won.")
             print(f"Score = Player One: {self.p1_score}, "
                   f"Player Two: {self.p2_score}.\n")
+        self.p2.learn(move2, move1)
 
     def play_game(self):
         self.rounds = 6
@@ -133,7 +127,7 @@ class Game:
         elif self.p2_score > self.p1_score:
             print_pause("Victory for Player Two!")
         else:
-            print_pause("Tie!")    
+            print_pause("Tie!")
         print_pause("Game over!")
         continue_quit()
 
@@ -146,7 +140,6 @@ if __name__ == '__main__':
         CyclePlayer()
     ]
     p1 = HumanPlayer()
-    p2 = CyclePlayer()
-    # p2 = random.choice(players)
+    p2 = random.choice(players)
     game = Game(p1, p2)
     game.play_game()
